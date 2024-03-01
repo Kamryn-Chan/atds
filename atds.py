@@ -247,7 +247,6 @@ class UnorderedList(object):
             previous.set_next(current.get_next())
             return result
 
-
     def __repr__(self):
         """Creates a representation of the list suitable for printing,
         debugging.
@@ -260,262 +259,112 @@ class UnorderedList(object):
         result = result + "]"
         return result
 
+
+class UnorderedListStack(object):
+    """Implements a Stack using the UnorderedList class.
+    """
+    def __init__(self):
+        self.ul = UnorderedList()
+
+    def push(self, item):
+        """Pushes an item onto the top of the stack.
+        """
+        self.ul.add(item)
+
+    def pop(self):
+        """Removes the item at the top of the stack and
+        returns it.
+        """
+        return self.ul.pop(0)
+    
+    def peek(self):
+        """Examines the item at the top of the stack
+        and returns that value. 
+        """
+        value = self.ul.pop(0)
+        self.ul.add(value)
+        return value
+
+    def size(self):
+        return self.ul.length()
+
+    def is_empty(self):
+        return self.ul.is_empty()
+
 def main():
-    print("Testing the UnorderedList class")
-    tests_passed = 0
+    print("Testing the Stack class") 
+    testsPassed = 0
     try:
-        ul = UnorderedList()
-        tests_passed += 1
-        print("Test passed: UnorderedList object created")
+        s = UnorderedListStack()
+        testsPassed += 1
+        print("Test passed: stack created") 
     except:
-        print("Test failed: couldn't create UnorderedList object")
+        print("Test failed: couldn't initialize stack")
+
+    try: 
+        s.push("hello")
+        s.push(3)
+        testsPassed += 1
+        print("Test passed: items pushed")
+    except:
+        print("Test failed: couldn't push onto stack")
 
     try:
-        if ul.is_empty():
-            tests_passed += 1
-            print("Test passed: .is_empty() method detected empty list")
+        result = s.peek() 
+        if (result == 3):
+            testsPassed += 1
+            print("Test passed: peeked at item") 
         else:
-            print("Test failed: .is_empty() method didn't understand that list is empty")
+            print("Test failed: incorrect peek value") 
     except:
-        print("Test failed: .is_empty method unavailable")
-    
-    try:
-        if ul.length() == 0:
-            tests_passed += 1
-            print("Test passed: .length() correctly identified a length of 0")
-        else:
-            print("Test failed: .length() didn't identify a length of 0")
-    except:
-        print("Test failed: .length() method unavailable")
-        
-    try:
-        ul.add(4)
-        ul.add(3)
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        tests_passed += 1
-        print("Test passed: five items added")
-    except:
-        print("Test failed: couldn't add items")
-    
-    try:
-        if not ul.is_empty():
-            tests_passed += 1
-            print("Test passed: .is_empty() method identified that list is no longer empty")
-        else:
-            print("Test failed: .is_empty() method thought list was empty, and it isn't")
-    except:
-        print("Test failed: .is_empty method unavailable")
-    
-    try:
-        if ul.length() == 5:
-            tests_passed += 1
-            print("Test passed: .length() correctly identified a length of 5")
-        else:
-            print("Test failed: .length() didn't identify a length of 5")
-    except:
-        print("Test failed: .length() method unusable")
-     
-    try:
-        result = str(ul)         # Try using __repr__
-        if result == "UnorderedList[0,1,2,3,4,]":
-            tests_passed += 1
-            print("Test passed: __repr__ returning correct values:")
-            print(result)
-        else:
-            print("Test failed: __repr__ returned " + result)
-            print("Expected: UnorderedList[0,1,2,3,4,]")
-        
-    except:
-        print("Test failed: couldn't reference __repr__ method")
-    
-    try:
-        if not ul.search(5):
-            tests_passed += 1
-            print("Test passed: .search() method correctly identified that 5 isn't on list")
-        else:
-            print("Test failed: .search() method thought 5 is on list when it isn't")
-    except:
-        print("Test failed: .search() method unavailable")
-        
-    try:
-        if ul.search(3):
-            tests_passed += 1
-            print("Test passed: .search() method correctly identified that 3 is on list")
-        else:
-            print("Test failed: .search() method thought 3 is on list when it isn't")
-    except:
-        print("Test failed: .search() method unavailable")
-    
-    try:
-        ul.remove(0)
-        if str(ul) == "UnorderedList[1,2,3,4,]":
-            tests_passed += 1
-            print("Test passed: .remove() successfully removed item from beginning of list")
-        else:
-            print("Test failed: .remove() didn't remove item from beginning of list")
-    except:
-        print("Test failed: .remove() method unavailable or not working?")
+        print("Test failed: couldn't peek at stack")
 
     try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.remove(1)
-        if str(ul) == "UnorderedList[0,2,]":
-            tests_passed += 1
-            print("Test passed: .remove() successfully removed item from middle of list")
+        result = s.pop()
+        if (result == 3):
+            testsPassed += 1
+            print("Test passed: item popped")
         else:
-            print("Test failed: .remove() didn't remove item from middle of list")
+            print("Test failed: incorrect pop result")
     except:
-        print("Test failed: .remove() method unavailable or not working?")
-        
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.remove(2)
-        if str(ul) == "UnorderedList[0,1,]":
-            tests_passed += 1
-            print("Test passed: .remove() successfully removed item from end of list")
-        else:
-            print("Test failed: .remove() didn't remove item from end of list")
-    except:
-        print("Test failed: .remove() method unavailable or not working?")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.remove(3)
-        if str(ul) == "UnorderedList[0,1,2,]":
-            tests_passed += 1
-            print("Test passed: .remove() successfully didn't remove item from list")
-        else:
-            print("Test failed: .remove() failed in not removing a non-existent item from list")
-    except:
-        print("Test failed: .remove() method unavailable or not working?")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(0)
-        ul.add(1)
-        ul.add(0)
-        print("Attempting multiple remove")
-        print("Before remove: " + str(ul))
-        ul.remove(0)
-        print("After remove: " + str(ul))
-        result = ul.search(0)
-        if not result:
-            tests_passed += 1
-            print("Test passed: .remove() successfully removed multiple items")
-        else:
-            print("Test failed: .remove() didn't remove multiple items")
-    except:
-        print("Test failed: .remove() method unavailable or not working?")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.append(3)
-        if str(ul) == "UnorderedList[0,1,2,3,]":
-            tests_passed += 1
-            print("Test passed: .append() successfully appended item to list")
-        else:
-            print("Test failed: .append() didn't append item to list")
-    except:
-        print("Test failed: .append() method unavailable or not working?")
-    
-    try:
-        result = ul.index(1)
-        if result == 1:
-            tests_passed += 1
-            print("Test passed: .index() successfully found item on list")
-        else:
-            print("Test failed: .index() failed to find item on list")
-    except:
-        print("Test failed: .index() method unavailable? (or __repr__ not working?)")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.insert(0, -1)
-        if str(ul) == "UnorderedList[-1,0,1,2,]":
-            tests_passed += 1
-            print("Test passed: .insert() successfully inserted value at beginning of list")
-        else:
-            print("Test failed: .insert() didn't correctly insert at beginning of list")
-    except:
-        print("Test failed: .insert() method unavailable? (or __repr__ not working?)")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.insert(2,3)
-        if str(ul) == "UnorderedList[0,1,3,2,]":
-            tests_passed += 1
-            print("Test passed: .insert() successfully inserted values in middle of list")
-        else:
-            print("Test failed: .insert() didn't correctly insert values in middle of list")
-    except:
-        print("Test failed: .insert() method unavailable? (or __repr__ not working?)")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.pop()
-        if str(ul) == "UnorderedList[0,1,]":
-            tests_passed += 1
-            print("Test passed: .pop() successfully removed last item from list")
-        else:
-            print("Test failed: .pop() didn't remove last item from list correctly")
-    except:
-        print("Test failed: .pop() method unavailable? (or __repr__ not working?)")
-    
-    try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.pop(0)
-        if str(ul) == "UnorderedList[1,2,]":
-            tests_passed += 1
-            print("Test passed: .pop(0) successfully removed first item from list")
-        else:
-            print("Test failed: .pop(0) didn't remove first item from list correctly")
-    except:
-        print("Test failed: .pop(0) method unavailable? (or __repr__ not working?)")
+        print("Test failed: couldn't pop")
 
     try:
-        ul = UnorderedList()
-        ul.add(2)
-        ul.add(1)
-        ul.add(0)
-        ul.pop(1)
-        if str(ul) == "UnorderedList[0,2,]":
-            tests_passed += 1
-            print("Test passed: .pop(1) successfully removed item from middle of list")
+        result = s.is_empty() 
+        if (not result):
+            testsPassed += 1
+            print("Test passed: is_empty returned correct result") 
         else:
-            print("Test failed: .pop(1) didn't remove last item from middle of list correctly")
+            print("Test failed: stack has items, but indicated empty") 
     except:
-        print("Test failed: .pop(1) method unavailable? (or __repr__ not working?)")
+        print("Test failed: is_empty() method unavailable")
 
+    try:
+        result = s.size() 
+        if (result == 1):
+            testsPassed += 1
+            print("Test passed: correct size returned")
+        else:
+            print("Test failed: incorrect size returned") 
+    except:
+        print("Test failed: .size() method unavailable")
 
-        
-    print(str(tests_passed) + "/21 tests passed on the UnorderedList class")
-
+    try: 
+        s.pop()
+    except: 
+        pass
+    
+    try:
+        result = s.is_empty() 
+        if (result):
+            testsPassed += 1
+            print("Test passed: .is_empty() correctly indicating empty status") 
+        else:
+            print("Test failed: stack failed to indicate empty status") 
+    except:
+        print("Test failed: is_empty() unavailable")
+    
+    print(str(testsPassed) + "/7 tests passed")
 
 if __name__ == "__main__":
     main()
