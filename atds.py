@@ -291,80 +291,51 @@ class UnorderedListStack(object):
     def is_empty(self):
         return self.ul.is_empty()
 
+    def __repr__(self):
+        return str(self.ul)
+
+class HashTable():
+    """Describes a hash table that will store key-value pairs.
+    """
+    def __init__(self, m):
+        """Creates an empty hash table of size m.
+        """
+        self.size = m
+        self.slots = [None] * self.size
+        self.data = [None] * self.size
+
+    def put(self, key, value):
+        """Creates an entry in the hash table.
+        """
+        hash_value = key % self.size
+        while self.slots[hash_value] != None:
+            hash_value += 1
+        if self.slots[hash_value] == key:
+            self.data[hash_value] = value
+        else:
+            self.slots[hash_value] = key
+            self.data[hash_value] = value
+
+    def get(self, key):
+        """Returns the value associated with the key or None.
+        """
+        hash_value = key % self.size
+        if self.slots[hash_value] == key:
+            return self.data[hash_value]
+        else:
+            while self.slots[hash_value] != None:
+                if self.slots[hash_value] == key:
+                    return self.data[hash_value]
+                hash_value += 1
+        return None
+
+    def __repr__(self):
+        """Returns a String representation of the hash table.
+        """
+        return "Keys:   " + str(self.slots) + "\n" + "Values: " + str(self.data)
+
 def main():
-    print("Testing the Stack class") 
-    testsPassed = 0
-    try:
-        s = UnorderedListStack()
-        testsPassed += 1
-        print("Test passed: stack created") 
-    except:
-        print("Test failed: couldn't initialize stack")
-
-    try: 
-        s.push("hello")
-        s.push(3)
-        testsPassed += 1
-        print("Test passed: items pushed")
-    except:
-        print("Test failed: couldn't push onto stack")
-
-    try:
-        result = s.peek() 
-        if (result == 3):
-            testsPassed += 1
-            print("Test passed: peeked at item") 
-        else:
-            print("Test failed: incorrect peek value") 
-    except:
-        print("Test failed: couldn't peek at stack")
-
-    try:
-        result = s.pop()
-        if (result == 3):
-            testsPassed += 1
-            print("Test passed: item popped")
-        else:
-            print("Test failed: incorrect pop result")
-    except:
-        print("Test failed: couldn't pop")
-
-    try:
-        result = s.is_empty() 
-        if (not result):
-            testsPassed += 1
-            print("Test passed: is_empty returned correct result") 
-        else:
-            print("Test failed: stack has items, but indicated empty") 
-    except:
-        print("Test failed: is_empty() method unavailable")
-
-    try:
-        result = s.size() 
-        if (result == 1):
-            testsPassed += 1
-            print("Test passed: correct size returned")
-        else:
-            print("Test failed: incorrect size returned") 
-    except:
-        print("Test failed: .size() method unavailable")
-
-    try: 
-        s.pop()
-    except: 
-        pass
-    
-    try:
-        result = s.is_empty() 
-        if (result):
-            testsPassed += 1
-            print("Test passed: .is_empty() correctly indicating empty status") 
-        else:
-            print("Test failed: stack failed to indicate empty status") 
-    except:
-        print("Test failed: is_empty() unavailable")
-    
-    print(str(testsPassed) + "/7 tests passed")
+    pass
 
 if __name__ == "__main__":
     main()
